@@ -51,8 +51,6 @@ async function signTypedData(signer, from, data) {
 
 async function buildRequest(forwarder, input) {
   const nonce = await forwarder.getNonce(input.from).then(nonce => nonce.toString());
-  const amt = '1000000000000000';
-  const amount = ethers.utils.parseEther(amt);
   return { value: 0, gas: 1e6, nonce, ...input };
 }
 
@@ -64,6 +62,7 @@ async function buildTypedData(forwarder, request) {
 
 async function signMetaTxRequest(signer, forwarder, input) {
   const request = await buildRequest(forwarder, input);
+  console.log(request,"REQUEST")
   const toSign = await buildTypedData(forwarder, request);
   const signature = await signTypedData(signer, input.from, toSign);
   return { signature, request };
